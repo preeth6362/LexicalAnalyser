@@ -15,6 +15,10 @@ TokenType isINT_Constant(char ch,FILE *fptr,char *buff)
             if(checkBinary(ch,fptr,1,buff)==1)return INT_CONSTANT;
             else if(checkHex(ch,fptr,1,buff)==1)return INT_CONSTANT;
             else if(checkOct(ch,fptr,1,buff)==1)return INT_CONSTANT;
+            else if(ch=='.')
+            {
+                if(checkFloat(ch,fptr,1,buff)==1)return INT_CONSTANT;
+            }
             else if(isalpha(ch))
             {
             buff[i++]=ch;
@@ -113,7 +117,7 @@ if(ch=='b' || ch=='B')
                 buff[i++]=ch;
                 while((ch=getc(fptr))!=EOF)
                 {
-                    if(ch==' '||ch=='\n'||ch=='\t'||ch==';'||ch==EOF)
+                    if(!isalnum(ch))
                     {
                         fseek(fptr,-1,SEEK_CUR);
                         break;
@@ -182,7 +186,26 @@ int checkOct(char ch,FILE *fptr,int i,char *buff)
         while((ch=getc(fptr))!=EOF)
         {
             if(isdigit(ch))
+            {
+            if(ch=='0'||ch=='1'||ch=='2'||ch=='3'||ch=='4'||ch=='5'||ch=='6'||ch=='7')
             buff[i++]=ch;
+            else
+            {
+                buff[i++]=ch;
+            while((ch=getc(fptr))!=EOF)
+            {
+                if(!isalnum(ch))
+                {
+                    fseek(fptr,-1,SEEK_CUR);
+                    break;
+                }
+                buff[i++]=ch;
+            }
+            buff[i]='\0';
+            printf("%s\t\t\tError:Invalid integral constant\n",buff);
+            return 1;
+            }
+        }
             else if(isalpha(ch))
             {
             buff[i++]=ch;
@@ -223,7 +246,7 @@ int checkFloat(char ch,FILE *fptr,int i,char *buff)
             buff[i++]=ch;
             while((ch=getc(fptr))!=EOF)
             {
-                if(ch==' '||ch=='\n'||ch=='\t'||ch==';'||ch==EOF)
+                if(!isalnum(ch))
                 {
                     fseek(fptr,-1,SEEK_CUR);
                     break;
@@ -243,7 +266,7 @@ int checkFloat(char ch,FILE *fptr,int i,char *buff)
             buff[i++]=ch;
             while((ch=getc(fptr))!=EOF)
             {
-                if(ch==' '||ch=='\n'||ch=='\t'||ch==';'||ch==EOF)
+                if(!isalnum(ch))
                 {
                     fseek(fptr,-1,SEEK_CUR);
                     break;

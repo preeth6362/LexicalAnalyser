@@ -149,9 +149,9 @@ int checkHex(char ch,FILE *fptr,int i,char *buff)
             else if(isalpha(ch))
             {
             buff[i++]=ch;
-            while(ch=getc(fptr)!=EOF)
+            while((ch=getc(fptr))!=EOF)
             {
-                if(ch==' '||ch=='\n'||ch=='\t'||ch==';'||ch==EOF)
+                if(!isalnum(ch))
                 {
                     fseek(fptr,-1,SEEK_CUR);
                     break;
@@ -186,9 +186,9 @@ int checkOct(char ch,FILE *fptr,int i,char *buff)
             else if(isalpha(ch))
             {
             buff[i++]=ch;
-            while(ch=getc(fptr)!=EOF)
+            while((ch=getc(fptr))!=EOF)
             {
-                if(ch==' '||ch=='\n'||ch=='\t'||ch==';'||ch==EOF)
+                if(!isalnum(ch))
                 {
                     fseek(fptr,-1,SEEK_CUR);
                     break;

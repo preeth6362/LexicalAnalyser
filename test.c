@@ -1,5 +1,6 @@
 int main()
 {
-    int 12sum=10+20;
-    printf("%d",sum)};
+    int sum='\n';
+    sum=20;
+    printf("%d",sum);
 }
